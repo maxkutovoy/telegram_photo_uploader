@@ -3,6 +3,7 @@ import requests
 from tldextract import extract
 import os
 from urllib.parse import urlparse
+from pathlib import Path
 from pprint import pprint
 
 
@@ -15,10 +16,10 @@ def save_images(servise_url, image_url, filename):
     response = requests.get(image_url)
     response.raise_for_status()
 
-    directory = fetch_file_name_prefix(servise_url)
+    directory = f"images/{fetch_file_name_prefix(servise_url)}"
+    print(directory)
 
-    if not os.path.exists(directory):
-        os.makedirs(directory)
+    Path(directory).mkdir(parents=True, exist_ok=True)
 
     filename = f"{directory}/{filename}"
 
@@ -66,11 +67,10 @@ def fetch_extension(url):
     __, extension = os.path.splitext(url)
     return extension
 
-# https://api.nasa.gov/planetary/apod?api_key=C0PVRDummK18vJxbYfuAERTd6CccdT7toxBgYzal
 
 if __name__ == "__main__":
     # filename = "hubble.jpeg"
     url = "https://upload.wikimedia.org/wikipedia/commons/3/3f/HST-SM4.jpeg"
 
-    # fetch_spacex_last_launch_images()
+    fetch_spacex_last_launch_images()
     fetch_nasa_images()
