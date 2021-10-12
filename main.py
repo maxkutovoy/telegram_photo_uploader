@@ -1,29 +1,30 @@
 import requests
-
 from tldextract import extract
+
 import os
-from urllib.parse import urlparse
+from dotenv import load_dotenv
 from pathlib import Path
-from pprint import pprint
+from urllib.parse import urlparse
 
 
 def fetch_file_name_prefix(url):
-    extracted = extract(url)
-    return extracted.domain
+    extracted_url = extract(url)
+    return extracted_url.domain
 
 
-def save_images(servise_url, image_url, filename):
-    response = requests.get(image_url)
+def fetch_extension(url):
+    __, extension = os.path.splitext(url)
+    return extension
+
+
+def save_images(servise_url, image_url, filename, params=None):
+    response = requests.get(image_url,params=params)
     response.raise_for_status()
 
     directory = f"images/{fetch_file_name_prefix(servise_url)}"
-    print(directory)
-
     Path(directory).mkdir(parents=True, exist_ok=True)
-
-    filename = f"{directory}/{filename}"
-
-    with open (filename, "wb") as file:
+    file_path = f"{directory}/{filename}"
+    with open (file_path, "wb") as file:
         file.write(response.content)
 
 
@@ -31,7 +32,7 @@ def fetch_spacex_last_launch_images():
     spacex_url = "https://api.spacexdata.com/v4/launches"
     spacex_response = requests.get(spacex_url)
     all_spacex_launches = spacex_response.json()
-    sorted_spacex_launches = list(reversed(all_spacex_launches))
+    sorted_spacex_launches = reversed(all_spacex_launches)
 
     for flight in sorted_spacex_launches:
         if flight["links"]["flickr"]["original"]:
@@ -51,26 +52,42 @@ def fetch_nasa_images(nubder_of_images=10):
         }
 
     nasa_response = requests.get(nasa_url, params=params)
-    nasa_request = nasa_response.json()
+    nasa_images = nasa_response.json()
 
-    for image_number, image in enumerate(nasa_request):
+
+    for image_number, image in enumerate(nasa_images):
         try:
             image_url = image["hdurl"]
             extension = fetch_extension(image_url)
             filename = f"nasa{image_number}{extension}"           
             save_images(nasa_url, image_url, filename)
         except:
-            print("Изображение не найдено")
+            print("В NASA изображение не найдено")
 
 
-def fetch_extension(url):
-    __, extension = os.path.splitext(url)
-    return extension
+def fetch_nasa_earth_images():
+    nasa_url = "https://api.nasa.gov/EPIC/api/natural/images"
+    payload = {
+        "api_key": os.getenv("NASA_TOKEN"),
+        }
+    nasa_response = requests.get(nasa_url, params=payload)
+    nasa_earth_images = nasa_response.json()
+
+    for image_number, image in enumerate(nasa_earth_images):
+        try:
+            image_name = image["image"]
+            date = image["date"].split()[0].replace("-", "/")
+            image_url = f"https://api.nasa.gov/EPIC/archive/natural/{date}/png/{image_name}.png"
+            extension = fetch_extension(image_url)
+            filename = f"nasa_earth{image_number}{extension}"           
+            save_images(nasa_url, image_url, filename, params=payload)
+        except:
+            print("В NASA_Eerth Изображение не найдено")
 
 
 if __name__ == "__main__":
-    # filename = "hubble.jpeg"
-    url = "https://upload.wikimedia.org/wikipedia/commons/3/3f/HST-SM4.jpeg"
+    load_dotenv()
 
     fetch_spacex_last_launch_images()
     fetch_nasa_images()
+    fetch_nasa_earth_images()
