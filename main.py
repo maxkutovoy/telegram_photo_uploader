@@ -50,7 +50,6 @@ def fetch_nasa_images(nubder_of_images=10):
         "thumbs": "True",
         "count": nubder_of_images,
         }
-
     nasa_response = requests.get(nasa_url, params=params)
     nasa_images = nasa_response.json()
 
