@@ -14,8 +14,8 @@ def main():
         env = Env()
         env.read_env()
 
-        bot = telegram.Bot(token=os.getenv("TELEGRAM_TOKEN"))
-        space_photos_channel_id = os.getenv("CHANNEL_ID")
+        bot = telegram.Bot(token=env.str("TELEGRAM_TOKEN"))
+        space_photos_channel_id = os.str("CHANNEL_ID")
 
         fi.fetch_images()
         root_img_dir = env.str("ROOT_IMG_DIR")
@@ -29,7 +29,7 @@ def main():
         for dir in dirs_for_remove:
             shutil.rmtree(f"{root_img_dir}/{dir}")
 
-        time.sleep(int(env.int("TIME_INTERVAL")))
+        time.sleep(env.int("TIME_INTERVAL"))
 
 
 if __name__ == "__main__":
