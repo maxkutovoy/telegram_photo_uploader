@@ -1,10 +1,10 @@
-import requests
-from tldextract import extract
-
 import os
-from dotenv import load_dotenv
 from pathlib import Path
 from urllib.parse import urlparse
+
+import requests
+from dotenv import load_dotenv
+from tldextract import extract
 
 
 def fetch_file_name_prefix(url):
@@ -18,10 +18,12 @@ def fetch_extension(url):
 
 
 def save_images(servise_url, image_url, filename, params=None):
-    response = requests.get(image_url,params=params)
+    response = requests.get(image_url, params=params)
     response.raise_for_status()
 
-    directory = f"images/{fetch_file_name_prefix(servise_url)}"
+    root_img_dir = os.getenv("ROOT_IMG_DIR")
+
+    directory = f"{root_img_dir}/{fetch_file_name_prefix(servise_url)}"
     Path(directory).mkdir(parents=True, exist_ok=True)
     file_path = f"{directory}/{filename}"
     with open (file_path, "wb") as file:
@@ -84,9 +86,12 @@ def fetch_nasa_earth_images():
             print("В NASA_Eerth Изображение не найдено")
 
 
-if __name__ == "__main__":
-    load_dotenv()
-
+def fetch_images():
     fetch_spacex_last_launch_images()
     fetch_nasa_images()
     fetch_nasa_earth_images()
+
+
+if __name__ == "__main__":
+    load_dotenv()
+    fetch_images()
