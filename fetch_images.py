@@ -3,7 +3,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 import requests
-from dotenv import load_dotenv
+from environs import Env
 from tldextract import extract
 
 
@@ -18,10 +18,12 @@ def fetch_extension(url):
 
 
 def save_images(servise_url, image_url, filename, params=None):
+    env = Env()
+    env.read_env()
     response = requests.get(image_url, params=params)
     response.raise_for_status()
 
-    root_img_dir = os.getenv("ROOT_IMG_DIR")
+    root_img_dir = env.str("ROOT_IMG_DIR")
 
     directory = f"{root_img_dir}/{fetch_file_name_prefix(servise_url)}"
     Path(directory).mkdir(parents=True, exist_ok=True)
@@ -45,10 +47,12 @@ def fetch_spacex_last_launch_images():
             break
 
 
-def fetch_nasa_images(nubder_of_images=10):
+def fetch_nasa_images(nubder_of_images=15):
+    env = Env()
+    env.read_env()
     nasa_url = "https://api.nasa.gov/planetary/apod"
     params = {
-        "api_key": os.getenv("NASA_TOKEN"),
+        "api_key": env.str("NASA_TOKEN"),
         "thumbs": "True",
         "count": nubder_of_images,
         }
@@ -67,9 +71,11 @@ def fetch_nasa_images(nubder_of_images=10):
 
 
 def fetch_nasa_earth_images():
+    env = Env()
+    env.read_env()
     nasa_url = "https://api.nasa.gov/EPIC/api/natural/images"
     payload = {
-        "api_key": os.getenv("NASA_TOKEN"),
+        "api_key": env.str("NASA_TOKEN"),
         }
     nasa_response = requests.get(nasa_url, params=payload)
     nasa_earth_images = nasa_response.json()
@@ -93,5 +99,4 @@ def fetch_images():
 
 
 if __name__ == "__main__":
-    load_dotenv()
     fetch_images()
