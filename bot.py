@@ -6,7 +6,8 @@ import time
 import telegram
 from environs import Env
 
-import fetch_images as fi
+from fetch_nasa import fetch_nasa
+from fetch_spacex import fetch_spacex_images
 
 
 def main():
@@ -15,9 +16,10 @@ def main():
         env.read_env()
 
         bot = telegram.Bot(token=env.str("TELEGRAM_TOKEN"))
-        space_photos_channel_id = os.str("CHANNEL_ID")
+        space_photos_channel_id = env.str("CHANNEL_ID")
 
-        fi.fetch_images()
+        fetch_nasa()
+        fetch_spacex_images()
         root_img_dir = env.str("ROOT_IMG_DIR")
         random_image_dir = random.choice(os.listdir(root_img_dir))
         random_image = random.choice((os.listdir(f"{root_img_dir}/{random_image_dir}")))
