@@ -4,14 +4,14 @@ from environs import Env
 import services
 
 
-def fetch_nasa_images(nubder_of_images=15):
+def fetch_nasa_images(numder_of_images=15):
     env = Env()
     env.read_env()
     nasa_url = "https://api.nasa.gov/planetary/apod"
     params = {
         "api_key": env.str("NASA_TOKEN"),
         "thumbs": "True",
-        "count": nubder_of_images,
+        "count": numder_of_images,
         }
     nasa_response = requests.get(nasa_url, params=params)
     nasa_images = nasa_response.json()
