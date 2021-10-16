@@ -20,7 +20,7 @@ def main():
 
         fetch_nasa()
         fetch_spacex_images()
-        root_img_dir = env.str("ROOT_IMG_DIR")
+        root_img_dir = env.str("ROOT_IMG_DIR", "images")
         random_image_dir = random.choice(os.listdir(root_img_dir))
         random_image = random.choice((os.listdir(f"{root_img_dir}/{random_image_dir}")))
         random_image_path = f"{root_img_dir}/{random_image_dir}/{random_image}"
@@ -31,7 +31,7 @@ def main():
         for dir in dirs_for_remove:
             shutil.rmtree(f"{root_img_dir}/{dir}")
 
-        time.sleep(env.int("TIME_INTERVAL"))
+        time.sleep(env.int("TIME_INTERVAL", 86400))
 
 
 if __name__ == "__main__":
