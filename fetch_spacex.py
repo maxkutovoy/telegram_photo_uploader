@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -11,6 +10,7 @@ import services
 def fetch_spacex_images(root_img_dir):
     spacex_url = "https://api.spacexdata.com/v4/launches"
     spacex_response = requests.get(spacex_url)
+    spacex_response.raise_for_status()
     all_spacex_launches = spacex_response.json()
     sorted_spacex_launches = reversed(all_spacex_launches)
     directory = f"{root_img_dir}/{services.fetch_file_name_prefix(spacex_url)}"

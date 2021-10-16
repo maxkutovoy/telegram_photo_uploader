@@ -7,8 +7,6 @@ import services
 
 
 def fetch_nasa_images(nasa_token, root_img_dir, number_of_images=15):
-    env = Env()
-    env.read_env()
     nasa_url = "https://api.nasa.gov/planetary/apod"
     params = {
         "api_key": nasa_token,
@@ -16,6 +14,7 @@ def fetch_nasa_images(nasa_token, root_img_dir, number_of_images=15):
         "count": number_of_images,
         }
     nasa_response = requests.get(nasa_url, params=params)
+    nasa_response.raise_for_status()
     nasa_images = nasa_response.json()
 
     directory = f"{root_img_dir}/{services.fetch_file_name_prefix(nasa_url)}"
@@ -37,6 +36,7 @@ def fetch_nasa_earth_images(nasa_token, root_img_dir):
         "api_key": nasa_token,
         }
     nasa_response = requests.get(nasa_epic_url, params=payload)
+    nasa_response.raise_for_status()
     nasa_epic_images = nasa_response.json()
 
     directory = f"{root_img_dir}/{services.fetch_file_name_prefix(nasa_epic_url)}"
