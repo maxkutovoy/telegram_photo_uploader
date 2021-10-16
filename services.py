@@ -17,13 +17,10 @@ def fetch_extension(url):
     return extension
 
 
-def save_images(servise_url, image_url, filename, params=None):
-    env = Env()
-    env.read_env()
+def save_images(root_img_dir, servise_url, image_url, filename, params=None):
+
     response = requests.get(image_url, params=params)
     response.raise_for_status()
-
-    root_img_dir = env.str("ROOT_IMG_DIR")
 
     directory = f"{root_img_dir}/{fetch_file_name_prefix(servise_url)}"
     Path(directory).mkdir(parents=True, exist_ok=True)

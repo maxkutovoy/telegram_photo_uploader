@@ -14,13 +14,15 @@ def main():
     while True:
         env = Env()
         env.read_env()
-
-        bot = telegram.Bot(token=env.str("TELEGRAM_TOKEN"))
+        root_img_dir = env.str("ROOT_IMG_DIR", "images")
+        nasa_toket = env.str("NASA_TOKEN")
+        telegram_token = env.str("TELEGRAM_TOKEN")
         space_photos_channel_id = env.str("CHANNEL_ID")
 
-        fetch_nasa()
-        fetch_spacex_images()
-        root_img_dir = env.str("ROOT_IMG_DIR", "images")
+        bot = telegram.Bot(token=telegram_token)
+        
+        fetch_nasa(nasa_toket, root_img_dir)
+        fetch_spacex_images(root_img_dir)
         random_image_dir = random.choice(os.listdir(root_img_dir))
         random_image = random.choice((os.listdir(f"{root_img_dir}/{random_image_dir}")))
         random_image_path = f"{root_img_dir}/{random_image_dir}/{random_image}"
