@@ -27,7 +27,8 @@ def main():
         random_image = random.choice((os.listdir(f"{root_img_dir}/{random_image_dir}")))
         random_image_path = f"{root_img_dir}/{random_image_dir}/{random_image}"
 
-        bot.send_photo(chat_id=space_photos_channel_id, photo=open(random_image_path, 'rb'))
+        with open(random_image_path, 'rb') as file:
+            bot.send_photo(chat_id=space_photos_channel_id, photo=open(file))
 
         dirs_for_remove = os.listdir(root_img_dir)
         for dir in dirs_for_remove:
