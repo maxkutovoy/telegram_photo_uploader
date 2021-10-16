@@ -1,4 +1,6 @@
 import os
+import random
+import shutil
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -17,8 +19,19 @@ def fetch_extension(url):
     return extension
 
 
-def save_images(root_img_dir, servise_url, image_url, filename, params=None):
+def fetch_random_image(root_img_dir):
+        random_image_dir = random.choice(os.listdir(root_img_dir))
+        random_image = random.choice((os.listdir(f"{root_img_dir}/{random_image_dir}")))
+        random_image_path = f"{root_img_dir}/{random_image_dir}/{random_image}"
+        return random_image_path
 
+
+def remove_used_images(root_img_dir):
+        dirs_for_remove = os.listdir(root_img_dir)
+        for dir in dirs_for_remove:
+        shutil.rmtree(f"{root_img_dir}/{dir}")
+
+def save_images(root_img_dir, servise_url, image_url, filename, params=None):
     response = requests.get(image_url, params=params)
     response.raise_for_status()
 
