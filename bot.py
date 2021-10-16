@@ -23,7 +23,7 @@ def main():
         fetch_spacex_images(root_img_dir)
         random_image_path = services.fetch_random_image(root_img_dir)
         with open(random_image_path, 'rb') as file:
-            bot.send_photo(chat_id=telegram_channel_id, photo=open(file))
+            bot.send_photo(chat_id=telegram_channel_id, photo=file)
         services.remove_used_images(root_img_dir)
 
         time.sleep(env.int("TIME_INTERVAL", 86400))

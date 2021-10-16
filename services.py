@@ -2,7 +2,7 @@ import os
 import random
 import shutil
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import unquote, urlparse, urlsplit
 
 import requests
 from environs import Env
@@ -14,9 +14,10 @@ def fetch_file_name_prefix(url):
     return extracted_url.domain
 
 
-def fetch_extension(url):
-    __, extension = os.path.splitext(url)
-    return extension
+def fetch_filename(url):
+    parsed_url = urlsplit(url)
+    filename = os.path.split(unquote(parsed_url.path))[1]
+    return filename
 
 
 def fetch_random_image(root_img_dir):
@@ -31,8 +32,8 @@ def remove_used_images(root_img_dir):
         for dir in dirs_for_remove:
             shutil.rmtree(f"{root_img_dir}/{dir}")
 
-def save_images(image_url, filename, params=None):
+def save_images(image_url, file_path, params=None):
     response = requests.get(image_url, params=params)
     response.raise_for_status()
-    with open (filename, "wb") as file:
+    with open (file_path, "wb") as file:
         file.write(response.content)

@@ -24,9 +24,9 @@ def fetch_nasa_images(nasa_token, root_img_dir, number_of_images=15):
     for image_number, image in enumerate(nasa_images):
         try:
             image_url = image["hdurl"]
-            extension = services.fetch_extension(image_url)
-            filename = f"{directory}/nasa{image_number}{extension}"      
-            services.save_images(image_url, filename)
+            filename = services.fetch_filename(image_url)
+            file_path = f"{directory}/{filename}"   
+            services.save_images(image_url, file_path)
         except:
             print("В NASA изображение не найдено")
 
@@ -47,9 +47,9 @@ def fetch_nasa_earth_images(nasa_token, root_img_dir):
             image_name = image["image"]
             date = image["date"].split()[0].replace("-", "/")
             image_url = f"https://api.nasa.gov/EPIC/archive/natural/{date}/png/{image_name}.png"
-            extension = services.fetch_extension(image_url)
-            filename = f"{directory}/nasa_epic{image_number}{extension}"          
-            services.save_images(image_url, filename, params=payload)
+            filename = services.fetch_filename(image_url)
+            file_path = f"{directory}/{filename}" 
+            services.save_images(image_url, file_path, params=payload)
         except:
             print("В NASA_Eerth Изображение не найдено")
 
