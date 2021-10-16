@@ -29,14 +29,10 @@ def fetch_random_image(root_img_dir):
 def remove_used_images(root_img_dir):
         dirs_for_remove = os.listdir(root_img_dir)
         for dir in dirs_for_remove:
-        shutil.rmtree(f"{root_img_dir}/{dir}")
+            shutil.rmtree(f"{root_img_dir}/{dir}")
 
-def save_images(root_img_dir, servise_url, image_url, filename, params=None):
+def save_images(image_url, filename, params=None):
     response = requests.get(image_url, params=params)
     response.raise_for_status()
-
-    directory = f"{root_img_dir}/{fetch_file_name_prefix(servise_url)}"
-    Path(directory).mkdir(parents=True, exist_ok=True)
-    file_path = f"{directory}/{filename}"
-    with open (file_path, "wb") as file:
+    with open (filename, "wb") as file:
         file.write(response.content)
