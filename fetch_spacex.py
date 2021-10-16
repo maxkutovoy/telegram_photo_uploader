@@ -18,7 +18,7 @@ def fetch_spacex_images(root_img_dir):
 
     for launch in sorted_spacex_launches:
         if launch["links"]["flickr"]["original"]:
-            for image_number, image_url in enumerate(launch["links"]["flickr"]["original"]):
+            for _, image_url in enumerate(launch["links"]["flickr"]["original"]):
                 filename = services.fetch_filename(image_url)
                 file_path = f"{directory}/{filename}"
                 print(file_path)  
