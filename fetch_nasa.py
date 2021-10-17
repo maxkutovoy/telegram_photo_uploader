@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 
 import requests
@@ -21,10 +22,13 @@ def fetch_nasa_images(nasa_token, root_img_dir, number_of_images=15):
     Path(directory).mkdir(parents=True, exist_ok=True)
 
     for _, image in enumerate(nasa_images):
-        image_url = image["hdurl"]
-        filename = services.fetch_filename(image_url)
-        file_path = f"{directory}/{filename}"   
-        services.save_images(image_url, file_path)
+        try:
+            image_url = image["hdurl"]
+            filename = services.fetch_filename(image_url)
+            file_path = f"{directory}/{filename}"   
+            services.save_images(image_url, file_path)
+        except:
+            logging.error
 
 
 
@@ -41,12 +45,15 @@ def fetch_nasa_earth_images(nasa_token, root_img_dir):
     Path(directory).mkdir(parents=True, exist_ok=True)
 
     for image_number, image in enumerate(nasa_epic_images):
-        image_name = image["image"]
-        date = image["date"].split()[0].replace("-", "/")
-        image_url = f"https://api.nasa.gov/EPIC/archive/natural/{date}/png/{image_name}.png"
-        filename = services.fetch_filename(image_url)
-        file_path = f"{directory}/{filename}" 
-        services.save_images(image_url, file_path, params=payload)
+        try:    
+            image_name = image["image"]
+            date = image["date"].split()[0].replace("-", "/")
+            image_url = f"https://api.nasa.gov/EPIC/archive/natural/{date}/png/{image_name}.png"
+            filename = services.fetch_filename(image_url)
+            file_path = f"{directory}/{filename}" 
+            services.save_images(image_url, file_path, params=payload)
+        except:
+            logging.error
 
 
 def fetch_nasa(nasa_token, root_img_dir):
