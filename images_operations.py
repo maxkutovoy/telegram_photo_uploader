@@ -7,7 +7,9 @@ import requests
 
 def fetch_random_image(root_img_dir):
     random_image_dir = random.choice(os.listdir(root_img_dir))
-    random_image = random.choice((os.listdir(f"{root_img_dir}/{random_image_dir}")))
+    random_image = random.choice(
+        os.listdir(f"{root_img_dir}/{random_image_dir}")
+    )
     random_image_path = f"{root_img_dir}/{random_image_dir}/{random_image}"
     return random_image_path
 
