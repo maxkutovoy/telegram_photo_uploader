@@ -6,16 +6,16 @@ import requests
 
 
 def fetch_random_image(root_img_dir):
-        random_image_dir = random.choice(os.listdir(root_img_dir))
-        random_image = random.choice((os.listdir(f"{root_img_dir}/{random_image_dir}")))
-        random_image_path = f"{root_img_dir}/{random_image_dir}/{random_image}"
-        return random_image_path
+    random_image_dir = random.choice(os.listdir(root_img_dir))
+    random_image = random.choice((os.listdir(f"{root_img_dir}/{random_image_dir}")))
+    random_image_path = f"{root_img_dir}/{random_image_dir}/{random_image}"
+    return random_image_path
 
 
 def remove_used_images(root_img_dir):
-        dirs_for_remove = os.listdir(root_img_dir)
-        for dir in dirs_for_remove:
-            shutil.rmtree(f"{root_img_dir}/{dir}")
+    dirs_for_remove = os.listdir(root_img_dir)
+    for dir in dirs_for_remove:
+        shutil.rmtree(f"{root_img_dir}/{dir}")
 
 
 def save_images(image_url, file_path, params=None):
