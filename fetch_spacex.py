@@ -20,5 +20,5 @@ def fetch_spacex_images(root_img_dir):
             for image_url in launch["links"]["flickr"]["original"]:
                 filename = fl.fetch_filename(image_url)
                 file_path = f"{directory}/{filename}"
-                im.save_images(image_url, file_path)
+                im.save_image(image_url, file_path)
             break

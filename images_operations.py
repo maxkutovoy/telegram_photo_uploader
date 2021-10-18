@@ -18,7 +18,7 @@ def remove_used_images(root_img_dir):
         shutil.rmtree(f"{root_img_dir}/{dir}")
 
 
-def save_images(image_url, file_path, params=None):
+def save_image(image_url, file_path, params=None):
     response = requests.get(image_url, params=params)
     response.raise_for_status()
     with open(file_path, "wb") as file:

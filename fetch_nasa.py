@@ -26,7 +26,7 @@ def fetch_nasa_images(nasa_token, root_img_dir, number_of_images=15):
             image_url = image["hdurl"]
             filename = fl.fetch_filename(image_url)
             file_path = f"{directory}/{filename}"   
-            im.save_images(image_url, file_path)
+            im.save_image(image_url, file_path)
         except:
             logging.error
 
@@ -48,10 +48,9 @@ def fetch_nasa_earth_images(nasa_token, root_img_dir):
             image_name = image["image"]
             date = image["date"].split()[0].replace("-", "/")
             image_url = f"https://api.nasa.gov/EPIC/archive/natural/{date}/png/{image_name}.png"
-            )
             filename = fl.fetch_filename(image_url)
             file_path = f"{directory}/{filename}" 
-            im.save_images(image_url, file_path, params=payload)
+            im.save_image(image_url, file_path, params=payload)
         except:
             logging.error
 
