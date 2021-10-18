@@ -1,8 +1,6 @@
 from pathlib import Path
-from urllib.parse import urlparse
 
 import requests
-from environs import Env
 
 import services
 
@@ -20,7 +18,6 @@ def fetch_spacex_images(root_img_dir):
         if launch["links"]["flickr"]["original"]:
             for _, image_url in enumerate(launch["links"]["flickr"]["original"]):
                 filename = services.fetch_filename(image_url)
-                file_path = f"{directory}/{filename}"
-                print(file_path)  
+                file_path = f"{directory}/{filename}" 
                 services.save_images(image_url, file_path)
             break

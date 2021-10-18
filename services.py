@@ -1,11 +1,9 @@
 import os
 import random
 import shutil
-from pathlib import Path
-from urllib.parse import unquote, urlparse, urlsplit
+from urllib.parse import unquote, urlsplit
 
 import requests
-from environs import Env
 from tldextract import extract
 
 
@@ -31,6 +29,7 @@ def remove_used_images(root_img_dir):
         dirs_for_remove = os.listdir(root_img_dir)
         for dir in dirs_for_remove:
             shutil.rmtree(f"{root_img_dir}/{dir}")
+
 
 def save_images(image_url, file_path, params=None):
     response = requests.get(image_url, params=params)

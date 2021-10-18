@@ -2,7 +2,6 @@ import logging
 from pathlib import Path
 
 import requests
-from environs import Env
 
 import services
 
