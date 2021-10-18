@@ -27,7 +27,7 @@ def fetch_nasa_images(nasa_token, root_img_dir, number_of_images=15):
             filename = fl.fetch_filename(image_url)
             file_path = f"{directory}/{filename}"   
             im.save_image(image_url, file_path)
-        except:
+        except KeyError:
             logging.error
 
 
@@ -51,7 +51,7 @@ def fetch_nasa_earth_images(nasa_token, root_img_dir):
             filename = fl.fetch_filename(image_url)
             file_path = f"{directory}/{filename}" 
             im.save_image(image_url, file_path, params=payload)
-        except:
+        except KeyError:
             logging.error
 
 
