@@ -17,8 +17,8 @@ def fetch_spacex_images(root_img_dir):
 
     for launch in sorted_spacex_launches:
         if launch["links"]["flickr"]["original"]:
-            for _, image_url in enumerate(launch["links"]["flickr"]["original"]):
+            for image_url in launch["links"]["flickr"]["original"]:
                 filename = fl.fetch_filename(image_url)
-                file_path = f"{directory}/{filename}" 
+                file_path = f"{directory}/{filename}"
                 im.save_images(image_url, file_path)
             break
