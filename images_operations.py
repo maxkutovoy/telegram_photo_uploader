@@ -1,21 +1,8 @@
 import os
 import random
 import shutil
-from urllib.parse import unquote, urlsplit
 
 import requests
-from tldextract import extract
-
-
-def fetch_file_name_prefix(url):
-    extracted_url = extract(url)
-    return extracted_url.domain
-
-
-def fetch_filename(url):
-    parsed_url = urlsplit(url)
-    filename = os.path.split(unquote(parsed_url.path))[1]
-    return filename
 
 
 def fetch_random_image(root_img_dir):

@@ -3,7 +3,8 @@ from pathlib import Path
 
 import requests
 
-import services
+import filename_operations as fl
+import images_operations as im
 
 
 def fetch_nasa_images(nasa_token, root_img_dir, number_of_images=15):
@@ -17,15 +18,15 @@ def fetch_nasa_images(nasa_token, root_img_dir, number_of_images=15):
     nasa_response.raise_for_status()
     nasa_images = nasa_response.json()
 
-    directory = f"{root_img_dir}/{services.fetch_file_name_prefix(nasa_url)}"
+    directory = f"{root_img_dir}/{fl.fetch_filename_prefix(nasa_url)}"
     Path(directory).mkdir(parents=True, exist_ok=True)
 
     for _, image in enumerate(nasa_images):
         try:
             image_url = image["hdurl"]
-            filename = services.fetch_filename(image_url)
+            filename = fl.fetch_filename(image_url)
             file_path = f"{directory}/{filename}"   
-            services.save_images(image_url, file_path)
+            im.save_images(image_url, file_path)
         except:
             logging.error
 
@@ -40,7 +41,7 @@ def fetch_nasa_earth_images(nasa_token, root_img_dir):
     nasa_response.raise_for_status()
     nasa_epic_images = nasa_response.json()
 
-    directory = f"{root_img_dir}/{services.fetch_file_name_prefix(nasa_epic_url)}"
+    directory = f"{root_img_dir}/{fl.fetch_filename_prefix(nasa_epic_url)}"
     Path(directory).mkdir(parents=True, exist_ok=True)
 
     for image_number, image in enumerate(nasa_epic_images):
@@ -48,9 +49,9 @@ def fetch_nasa_earth_images(nasa_token, root_img_dir):
             image_name = image["image"]
             date = image["date"].split()[0].replace("-", "/")
             image_url = f"https://api.nasa.gov/EPIC/archive/natural/{date}/png/{image_name}.png"
-            filename = services.fetch_filename(image_url)
+            filename = fl.fetch_filename(image_url)
             file_path = f"{directory}/{filename}" 
-            services.save_images(image_url, file_path, params=payload)
+            im.save_images(image_url, file_path, params=payload)
         except:
             logging.error
 

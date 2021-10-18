@@ -1,10 +1,9 @@
-import os
 import time
 
 import telegram
 from environs import Env
 
-import services
+import images_operations as im
 from fetch_nasa import fetch_nasa
 from fetch_spacex import fetch_spacex_images
 
@@ -21,10 +20,10 @@ def main():
     while True:
         fetch_nasa(nasa_toket, root_img_dir)
         fetch_spacex_images(root_img_dir)
-        random_image_path = services.fetch_random_image(root_img_dir)
+        random_image_path = im.fetch_random_image(root_img_dir)
         with open(random_image_path, 'rb') as file:
             bot.send_photo(chat_id=telegram_channel_id, photo=file)
-        services.remove_used_images(root_img_dir)
+        im.remove_used_images(root_img_dir)
 
         time.sleep(env.int("TIME_INTERVAL", 86400))
 
