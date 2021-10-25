@@ -5,7 +5,7 @@ import shutil
 import requests
 
 
-def fetch_random_image(root_img_dir):
+def choose_random_image(root_img_dir):
     random_image_dir = random.choice(os.listdir(root_img_dir))
     random_image = random.choice(
         os.listdir(f"{root_img_dir}/{random_image_dir}")
@@ -14,7 +14,7 @@ def fetch_random_image(root_img_dir):
     return random_image_path
 
 
-def remove_used_images(root_img_dir):
+def remove_image_dirs(root_img_dir):
     dirs_for_remove = os.listdir(root_img_dir)
     for dir in dirs_for_remove:
         shutil.rmtree(f"{root_img_dir}/{dir}")

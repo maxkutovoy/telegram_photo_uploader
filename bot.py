@@ -20,10 +20,10 @@ def main():
     while True:
         fetch_nasa(nasa_toket, root_img_dir)
         fetch_spacex_images(root_img_dir)
-        random_image_path = im.fetch_random_image(root_img_dir)
+        random_image_path = im.choose_random_image(root_img_dir)
         with open(random_image_path, 'rb') as file:
             bot.send_photo(chat_id=telegram_channel_id, photo=file)
-        im.remove_used_images(root_img_dir)
+        im.remove_image_dirs(root_img_dir)
 
         time.sleep(env.int("TIME_INTERVAL", 86400))
 
