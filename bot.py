@@ -3,7 +3,7 @@ import time
 import telegram
 from environs import Env
 
-import images_operations as im
+import images_operations
 from fetch_nasa import fetch_nasa
 from fetch_spacex import fetch_spacex_images
 
@@ -23,7 +23,7 @@ def main():
         random_image_path = im.choose_random_image(root_img_dir)
         with open(random_image_path, 'rb') as file:
             bot.send_photo(chat_id=telegram_channel_id, photo=file)
-        im.remove_image_dirs(root_img_dir)
+        images_operations.remove_image_dirs(root_img_dir)
 
         time.sleep(env.int("TIME_INTERVAL", 86400))
 
