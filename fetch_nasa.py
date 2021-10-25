@@ -2,8 +2,8 @@ from pathlib import Path
 
 import requests
 
-import filename_operations as fl
-import images_operations as im
+import filename_operations
+import images_operations
 
 
 def fetch_nasa_images(nasa_token, root_img_dir, number_of_images=15):
@@ -17,15 +17,15 @@ def fetch_nasa_images(nasa_token, root_img_dir, number_of_images=15):
     nasa_response.raise_for_status()
     nasa_images = nasa_response.json()
 
-    directory = f"{root_img_dir}/{fl.define_filename_prefix(nasa_url)}"
+    directory = f"{root_img_dir}/{filename_operations.define_filename_prefix(nasa_url)}"
     Path(directory).mkdir(parents=True, exist_ok=True)
 
     for image in nasa_images:
         if image["hdurl"]:
             image_url = image["hdurl"]
-            filename = fl.pars_filename(image_url)
+            filename = filename_operations.pars_filename(image_url)
             file_path = f"{directory}/{filename}"
-            im.save_image(image_url, file_path)
+            images_operations.save_image(image_url, file_path)
 
 
 def fetch_nasa_earth_images(nasa_token, root_img_dir):
@@ -37,7 +37,7 @@ def fetch_nasa_earth_images(nasa_token, root_img_dir):
     nasa_response.raise_for_status()
     nasa_epic_images = nasa_response.json()
 
-    directory = f"{root_img_dir}/{fl.define_filename_prefix(nasa_epic_url)}"
+    directory = f"{root_img_dir}/{filename_operations.define_filename_prefix(nasa_epic_url)}"
     Path(directory).mkdir(parents=True, exist_ok=True)
 
     for image in nasa_epic_images:
@@ -48,9 +48,9 @@ def fetch_nasa_earth_images(nasa_token, root_img_dir):
                 "https://api.nasa.gov/EPIC/archive/natural/"
                 f"{date}/png/{image_name}.png"
             )
-            filename = fl.pars_filename(image_url)
+            filename = filename_operations.pars_filename(image_url)
             file_path = f"{directory}/{filename}"
-            im.save_image(image_url, file_path, params=payload)
+            images_operations.save_image(image_url, file_path, params=payload)
 
 
 def fetch_nasa(nasa_token, root_img_dir):
